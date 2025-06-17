@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "project-management-system"
+version = "0.1.0"
+description = "Система управления проектами с API, уведомлениями и аналитикой"
+authors = ["Matvey <mateusru54063@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+# Staging (тестирование/разработка)
+[tool.poetry.group.staging.dependencies]
+django = "^5.0.0"
+djangorestframework = "^3.16.0"
+pytest = "^8.0.0"
+pytest-django = "^4.8.0"
+
+# Production (только необходимое)
+[tool.poetry.group.prod.dependencies]
+gunicorn = "^21.2.0"
+uvicorn = {extras = ["standard"], version = "^0.27.0"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
