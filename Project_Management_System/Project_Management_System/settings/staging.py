@@ -1,4 +1,4 @@
-from .base import *
+from .base import *  # noqa: F403,F401
 
 DEBUG = True
 
@@ -12,9 +12,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'debug_toolbar',
+    "debug_toolbar",
 ]
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = ["127.0.0.1"]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -23,7 +23,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 TEMPLATES = [
@@ -43,11 +43,11 @@ TEMPLATES = [
 
 
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TEMPLATE_CONTEXT': True,
-    'SHOW_TOOLBAR_CALLBACK': lambda request: True,
-    'RESULTS_CACHE_SIZE': 100,
-    'ENABLE_STACKTRACES': True,
-    'UPDATE_ON_FETCH': True,  # Новая рекомендуемая настройка
+    "SHOW_TEMPLATE_CONTEXT": True,
+    "SHOW_TOOLBAR_CALLBACK": lambda request: True,
+    "RESULTS_CACHE_SIZE": 100,
+    "ENABLE_STACKTRACES": False,
+    "UPDATE_ON_FETCH": True,  # Новая рекомендуемая настройка
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

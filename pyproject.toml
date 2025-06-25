@@ -6,15 +6,19 @@ authors = ["Matvey <mateusru54063@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-
-# Staging (тестирование/разработка)
+django = "^5.2.3"
+psycopg = {extras = ["binary"], version = "^3.2.9"}
+python-dotenv = "^1.1.1"
 [tool.poetry.group.staging.dependencies]
 django = "^5.0.0"
 djangorestframework = "^3.16.0"
 pytest = "^8.0.0"
 pytest-django = "^4.8.0"
-
-# Production (только необходимое)
+black = "^25.1.0"
+flake8 = "^7.3.0"
+isort = "^6.0.1"
+django-debug-toolbar = "^5.2.0"
+pre-commit = "^4.2.0"
 [tool.poetry.group.prod.dependencies]
 gunicorn = "^21.2.0"
 uvicorn = {extras = ["standard"], version = "^0.27.0"}
@@ -22,3 +26,48 @@ uvicorn = {extras = ["standard"], version = "^0.27.0"}
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+
+
+
+[tool.black]
+line-length = 90  # Максимальная длина строки (по умолчанию 88, как в PEP 8)
+target-version = ["py38", "py39", "py310"]  # Поддерживаемые версии Python
+include = '\.pyi?$'  # Какие файлы включать в форматирование
+
+exclude = '''
+/(
+    \.git
+  | \.mypy_cache
+  | \.venv
+  | build
+  | migrations
+  | __pycache__
+  | Project_Management_System/settings/*.py  # Игнорируем файлы настроек
+)/
+'''
+
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 90
+
+
+[tool.flake8]
+max-line-length = 90
+extend-ignore = "E203,F401,F403,F541"  # Глобальное игнорирование этих ошибок
+max-complexity = 10
+
+exclude = """
+    .git,
+    .mypy_cache,
+    .venv,
+    build,
+    migrations,
+    __pycache__,
+    manage.py,
+    Project_Management_System/settings/*.py,
+    Project_Management_System/urls.py
+"""

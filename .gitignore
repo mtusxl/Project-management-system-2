@@ -21,10 +21,6 @@ wheels/
 *.egg
 MANIFEST
 
-# Virtual environment
-.venv/
-venv/
-env/
 
 # Django
 *.log
@@ -45,5 +41,3 @@ Thumbs.db
 # Poetry
 poetry.lock
 EOF
-
-
