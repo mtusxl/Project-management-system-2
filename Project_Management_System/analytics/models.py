@@ -38,7 +38,7 @@ class Report(BaseAnalytics):
         ("CSV", "CSV"),
         ("XLSX", "Excel"),
     )
-    name = models.CharField(verbose_name="название отчета")
+    name = models.CharField(verbose_name="название отчета", blank=True)
     format = models.CharField(
         choices=REPORT_FORMATS, default="CSV", verbose_name="формат отчета"
     )
@@ -54,7 +54,7 @@ class ScheduledReport(BaseAnalytics):
         ("monthly", "Ежемесячно"),
     )
 
-    report = models.ForeignKey(Report, on_delete=models.CASCADE, verbose_name="Отчет")
+    report_id = models.ForeignKey(Report, on_delete=models.CASCADE, verbose_name="Отчет")
 
     recipients = models.ManyToManyField("Users.User", verbose_name="Получатели")
 

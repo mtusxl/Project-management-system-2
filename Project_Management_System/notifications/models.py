@@ -1,3 +1,4 @@
+from datetime import date
 from django.db import models
 
 from .base_model import BaseNotification
@@ -12,7 +13,7 @@ class Notification(BaseNotification):
         related_name="notification",
         verbose_name="получатель",
     )
-    reminder_date = models.DateField(verbose_name="дата напоминания")
+    reminder_date = models.DateField(verbose_name="дата напоминания", default=date.today)
     message = models.TextField(verbose_name="сообщение")
 
     def __str__(self):

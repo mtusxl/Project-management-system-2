@@ -4,10 +4,10 @@ from .base_model import BaseDashbord
 
 
 class Dashbord(BaseDashbord):
-    name = models.CharField(max_length=255)
-    column = models.CharField(verbose_name="колонка")
+    name = models.CharField(max_length=255, blank=True,  null=True)
+    column = models.CharField(max_length=100, blank=True,  null=True, verbose_name="колонка")
     project = models.ManyToManyField(
-        "Projects.Project", on_delete=models.CASCADE, related_name="dashbords"
+        "Projects.Project", related_name="dashbords"
     )
 
     def __str__(self):

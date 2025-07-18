@@ -5,7 +5,7 @@ from .base_model import BaseProject
 
 
 class Project(BaseProject):
-    name = models.CharField(verbose_name="название проекта")
+    name = models.CharField(verbose_name="название проекта", blank=True,  null=True)
     description = models.TextField(blank=True, verbose_name="описание")
     author = models.ForeignKey(
         "Users.User",
@@ -14,10 +14,10 @@ class Project(BaseProject):
         verbose_name="автор проекта",
     )
     members = models.ManyToManyField(
-        "Users.User", blank=True, related_name="projects", verbose_name="члены проекта"
+        "Users.User", blank=True, related_name="projects_members", verbose_name="члены проекта"
     )
     dashbord = models.ForeignKey(
-        Dashbord, on_delete=models.CASCADE, verbose_name="Канбан доска"
+        Dashbord, on_delete=models.CASCADE, verbose_name="Канбан доска", related_name="projects_dashbords"
     )
     created_at = models.DateField(auto_now_add=True, verbose_name="Дата создания")
 
