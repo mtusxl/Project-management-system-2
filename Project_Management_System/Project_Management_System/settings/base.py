@@ -14,10 +14,10 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 ROOT_URLCONF = "Project_Management_System.urls"
-print("⚠️ Загружено из .env:")
-print("DB_NAME =", os.getenv("DB_NAME"))
-print("DB_USER =", os.getenv("DB_USER"))
-print("DB_PASSWORD =", os.getenv("DB_PASSWORD"))
+# print(" Загружено из .env:")
+# print("DB_NAME =", os.getenv("DB_NAME"))
+# print("DB_USER =", os.getenv("DB_USER"))
+# print("DB_PASSWORD =", os.getenv("DB_PASSWORD"))
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -44,5 +44,31 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "Users",
+    "Tasks",
+    "Projects",
+    "Dashbords",
+    "notifications",
+    "analytics",
+]
 
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+]
+
+AUTH_USER_MODEL = "Users.User"
 STATIC_URL = "static/"
