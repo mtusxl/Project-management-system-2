@@ -1,8 +1,10 @@
 from Dashbords.models import Dashbord
 from django.db import models
 
+from .base_model import BaseProject
 
-class Project(models.Model):
+
+class Project(BaseProject):
     name = models.CharField(verbose_name="название проекта")
     description = models.TextField(blank=True, verbose_name="описание")
     author = models.ForeignKey(

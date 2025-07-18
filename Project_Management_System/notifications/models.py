@@ -1,9 +1,11 @@
 from django.db import models
 
+from .base_model import BaseNotification
+
 # from Users.models import User
 
 
-class Notification(models.Model):
+class Notification(BaseNotification):
     recipientv = models.ForeignKey(
         "Users.User",
         on_delete=models.CASCADE,

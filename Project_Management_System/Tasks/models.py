@@ -1,9 +1,11 @@
 from django.db import models
 
+from .base_model import BaseTask
+
 # from Users.models import User
 
 
-class Task(models.Model):
+class Task(BaseTask):
     PRIORITY_CHOICES = (
         (1, "Высокий"),
         (2, "Средний"),
@@ -22,8 +24,12 @@ class Task(models.Model):
         verbose_name="оSтвественный",
     )
     hours = models.DurationField(verbose_name="время выполнения")
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='subtasks', on_delete=models.CASCADE)
-    author = models.ForeignKey('Users.User', on_delete=models.CASCADE, related_name="task")
+    parent = models.ForeignKey(
+        "self", null=True, blank=True, related_name="subtasks", on_delete=models.CASCADE
+    )
+    author = models.ForeignKey(
+        "Users.User", on_delete=models.CASCADE, related_name="task"
+    )
 
     def __str__(self):
         return self.name

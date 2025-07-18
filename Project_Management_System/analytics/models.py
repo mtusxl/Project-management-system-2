@@ -1,9 +1,11 @@
 from django.db import models
 from Projects.models import Project
 
+from .base_model import BaseAnalytics
+
 
 # from Users.models import User
-class ProjectMetrics(models.Model):
+class ProjectMetrics(BaseAnalytics):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name="проект")
     date = models.DateField(auto_now_add=True, verbose_name="Дата создания метрики")
     total_task = models.PositiveIntegerField(default=0, verbose_name="Всего задач")
@@ -15,7 +17,7 @@ class ProjectMetrics(models.Model):
     )
 
 
-class UserPerformance(models.Model):
+class UserPerformance(BaseAnalytics):
     user = models.ForeignKey(
         "Users.User", on_delete=models.CASCADE, verbose_name="Участник проекта"
     )
@@ -30,7 +32,7 @@ class UserPerformance(models.Model):
     tasks_assigned = models.PositiveIntegerField(default=0)
 
 
-class Report(models.Model):
+class Report(BaseAnalytics):
     REPORT_FORMATS = (
         ("PDF", "PDF"),
         ("CSV", "CSV"),
@@ -45,7 +47,7 @@ class Report(models.Model):
     created_by = models.ForeignKey("Users.User", on_delete=models.SET_NULL, null=True)
 
 
-class ScheduledReport(models.Model):
+class ScheduledReport(BaseAnalytics):
     FREQUENCY_CHOICES = (
         ("daily", "Ежедневно"),
         ("weekly", "Еженедельно"),
