@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'rest_framework',
+    'rest_framework_simplejwt',
     "Users",
     "Tasks",
     "Projects",
@@ -69,6 +71,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
+
+REST_FRAMEWORK = {
+    'AUTHEFICATIONDEFAULT_AUTHENTICATION_CLASSES':(
+    'rest_framework_simplejwt.authentication.JWTAuthentication',)
+}
 
 AUTH_USER_MODEL = "Users.User"
 STATIC_URL = "static/"

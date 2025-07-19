@@ -20,7 +20,6 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(BaseUser):
-    
 
     number = models.CharField(max_length=12, unique=True, verbose_name="номер телефона")
     USERNAME_FIELD = "number"

@@ -1,4 +1,5 @@
 from datetime import date
+
 from django.db import models
 
 from .base_model import BaseNotification
