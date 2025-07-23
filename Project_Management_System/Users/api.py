@@ -4,7 +4,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User
 from .serilizers import RegistSerializer
-from .tasks import send_code
 
 
 class RegistAPI(APIView):
@@ -15,8 +14,6 @@ class RegistAPI(APIView):
         serializer = RegistSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-
-        send_code.delay(user.number)
 
         refresh = RefreshToken.for_user(user=user)
         return Response(
