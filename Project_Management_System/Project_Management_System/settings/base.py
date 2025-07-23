@@ -51,8 +51,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'rest_framework',
-    'rest_framework_simplejwt',
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "celery",
     "Users",
     "Tasks",
     "Projects",
@@ -73,9 +74,13 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    'AUTHEFICATIONDEFAULT_AUTHENTICATION_CLASSES':(
-    'rest_framework_simplejwt.authentication.JWTAuthentication',)
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
 }
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
+CELERY_IMPORTS = ("Users.tasks",)
 
 AUTH_USER_MODEL = "Users.User"
 STATIC_URL = "static/"
