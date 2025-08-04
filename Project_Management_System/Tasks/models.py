@@ -43,6 +43,14 @@ class Task(BaseTask):
         blank=True,
         null=True,
     )
+    project = models.ForeignKey(
+        "Projects.Project",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="tasks_project",
+        verbose_name="id проекта",
+    )
 
     def __str__(self):
         return self.name

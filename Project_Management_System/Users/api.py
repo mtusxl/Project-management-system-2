@@ -29,7 +29,7 @@ class RegistAPI(APIView):
             serializer.request_code(serializer.validated_data)
             return Response(
                 {
-                    "message": f"Код отправлен на номер {serializer.validated_data["number"]}" # noqa: E501
+                    "message": f"Код отправлен на номер {serializer.validated_data["number"]}"  # noqa: E501
                 }
             )
 
