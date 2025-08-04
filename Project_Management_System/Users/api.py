@@ -13,10 +13,25 @@ class RegistAPI(APIView):
     def post(self, request, *args, **kwargs):
         serializer = RegistSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+        code = request.data.get("code")
 
-        refresh = RefreshToken.for_user(user=user)
-        return Response(
-            {"access": str(refresh.access_token), "refresh_token": str(refresh)},
-            status=status.HTTP_201_CREATED,
-        )
+        if code:
+            user = serializer.verify_and_create(
+                number=serializer.validated_data["number"], code=code
+            )
+            refresh = RefreshToken.for_user(user=user)
+            return Response(
+                {"access": str(refresh.access_token), "refresh_token": str(refresh)},
+                status=status.HTTP_201_CREATED,
+            )
+        else:
+
+            serializer.request_code(serializer.validated_data)
+            return Response(
+                {
+                    "message": f"Код отправлен на номер {serializer.validated_data["number"]}" # noqa: E501
+                }
+            )
+
+
+# проверить код

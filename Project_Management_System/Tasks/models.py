@@ -23,11 +23,18 @@ class Task(BaseTask):
         "Users.User",
         on_delete=models.CASCADE,
         related_name="task_execor",
-        verbose_name="оSтвественный",
+        verbose_name="отвественный",
     )
     hours = models.DurationField(verbose_name="время выполнения", default=timedelta(0))
     parent = models.ForeignKey(
         "self", null=True, blank=True, related_name="subtasks", on_delete=models.CASCADE
+    )
+    column = models.ForeignKey(
+        "Dashbords.Column",
+        on_delete=models.CASCADE,
+        related_name="tasks_column",
+        blank=True,
+        null=True,
     )
     author = models.ForeignKey(
         "Users.User",

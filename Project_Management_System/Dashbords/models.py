@@ -1,14 +1,22 @@
 from django.db import models
 
-from .base_model import BaseDashbord
+from .base_model import BaseModel
 
 
-class Dashbord(BaseDashbord):
+class Dashbord(BaseModel):
     name = models.CharField(max_length=255, blank=True, null=True)
-    column = models.CharField(
-        max_length=100, blank=True, null=True, verbose_name="колонка"
-    )
     project = models.ManyToManyField("Projects.Project", related_name="dashbords")
 
     def __str__(self):
-        return self.column
+        return self.name
+
+
+class Column(BaseModel):
+    name = models.CharField(max_length=255)
+    order = models.PositiveIntegerField()
+    dashbord = models.ForeignKey(
+        Dashbord, on_delete=models.CASCADE, related_name="columns"
+    )
+
+    def __str__(self):
+        return self.name

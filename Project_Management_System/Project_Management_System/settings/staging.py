@@ -5,7 +5,10 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 if DEBUG:
-    INSTALLED_APPS.append("debug_toolbar")
+    INSTALLED_APPS.append("django_extensions")  # noqa: F405
+    INSTALLED_APPS.append("debug_toolbar")  # noqa: F405
+    INSTALLED_APPS.append("extra_settings")  # noqa: F405
+
 
 INTERNAL_IPS = ["127.0.0.1"]
 

@@ -1,10 +1,10 @@
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
+from django.dispatch import Signal, receiver
 
-from .models import User
 from .tasks import send_code
 
+verification_code_requested = Signal()
 
-@receiver(pre_save, sender=User)
-def verify_numver(sender, instance, **kwargs):
-    send_code.delay(instance.number)
+
+@receiver(verification_code_requested)
+def verify_numver(sender, number, **kwargs):
+    send_code.delay(number)

@@ -24,6 +24,8 @@ class Project(BaseProject):
         on_delete=models.CASCADE,
         verbose_name="Канбан доска",
         related_name="projects_dashbords",
+        blank=True,
+        null=True,
     )
     created_at = models.DateField(auto_now_add=True, verbose_name="Дата создания")
 

@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+from redis import Redis
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -14,10 +15,8 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 ROOT_URLCONF = "Project_Management_System.urls"
-# print(" Загружено из .env:")
-# print("DB_NAME =", os.getenv("DB_NAME"))
-# print("DB_USER =", os.getenv("DB_USER"))
-# print("DB_PASSWORD =", os.getenv("DB_PASSWORD"))
+
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -54,6 +53,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "celery",
+    "drf_yasg",
     "Users",
     "Tasks",
     "Projects",
@@ -78,6 +78,9 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     )
 }
+
+REDIS_CLIENT = Redis(host="localhost", port=6379, db=2)
+
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
 CELERY_IMPORTS = ("Users.tasks",)
