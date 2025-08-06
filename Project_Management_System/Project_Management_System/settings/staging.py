@@ -8,6 +8,21 @@ if DEBUG:
     INSTALLED_APPS.append("django_extensions")  # noqa: F405
     INSTALLED_APPS.append("debug_toolbar")  # noqa: F405
     INSTALLED_APPS.append("extra_settings")  # noqa: F405
+    EXTRA_SETTINGS_CACHE_NAME = "extra_settings"
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "default-cache",
+        },
+        "extra_settings": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://localhost:6379/3",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+            "TIMEOUT": 300,
+        },
+    }
 
 
 INTERNAL_IPS = ["127.0.0.1"]
