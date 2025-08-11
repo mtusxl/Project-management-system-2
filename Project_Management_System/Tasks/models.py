@@ -13,6 +13,7 @@ class Task(BaseTask):
         (2, "Средний"),
         (3, "Низкий"),
     )
+    STATUS_COICE = (("to_do", "To Do"), ("in_progress", "In progress"), ("done", "done"))
     name = models.CharField(verbose_name="название задачи", default="Без названия")
     description = models.TextField(blank=True, null=True, verbose_name="Описание")
     priority = models.IntegerField(
@@ -50,6 +51,18 @@ class Task(BaseTask):
         on_delete=models.CASCADE,
         related_name="tasks_project",
         verbose_name="id проекта",
+    )
+    status = models.CharField(
+        choices=STATUS_COICE, verbose_name="Статус", default="to_do"
+    )
+    story_points = models.PositiveIntegerField(default=0, verbose_name="Очки")
+    sprint = models.ForeignKey(
+        "analytics.Sprint",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="tasks_sprint",
+        verbose_name="спринт",
     )
 
     def __str__(self):

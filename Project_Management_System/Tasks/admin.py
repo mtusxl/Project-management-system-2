@@ -1,5 +1,30 @@
+from Dashbords.models import Column, Dashbord
 from django.contrib import admin
 
 from .models import Task
 
-admin.site.register(Task)
+
+class ColumnInline(admin.TabularInline):
+    model = Column
+    fields = ["name"]
+
+
+class DashboardInline(admin.TabularInline):
+    model = Dashbord
+    fields = ["name"]
+
+
+@admin.register(Task)
+class TasksAdmin(admin.ModelAdmin):
+    list_display = [
+        "name",
+        "status",
+        "priority",
+        "deadline",
+        "executor",
+        "hours",
+        "sprint",
+    ]
+    list_select_related = ["column"]
+    search_fields = ["name", "project"]
+    ordering = ["priority", "deadline"]

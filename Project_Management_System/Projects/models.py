@@ -1,4 +1,3 @@
-from Dashbords.models import Dashbord
 from django.db import models
 
 from .base_model import BaseProject
@@ -19,15 +18,18 @@ class Project(BaseProject):
         related_name="projects_members",
         verbose_name="члены проекта",
     )
-    dashbord = models.ForeignKey(
-        Dashbord,
-        on_delete=models.CASCADE,
-        verbose_name="Канбан доска",
-        related_name="projects_dashbords",
-        blank=True,
-        null=True,
-    )
+
     created_at = models.DateField(auto_now_add=True, verbose_name="Дата создания")
+
+    def total_tasks(self):
+        return self.tasks_project.count()
+
+    def progress(self):
+        tasks_done_count = self.tasks_project.filter(status="done").count()
+        tasks_count = self.tasks_project.count()
+        if tasks_count > 0:
+            return f" {int((tasks_done_count / tasks_count) * 100)} %"
+        return 0
 
     def __str__(self):
         return self.name

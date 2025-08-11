@@ -17,12 +17,22 @@ class Notification(BaseNotification):
     reminder_date = models.DateField(verbose_name="дата напоминания", default=date.today)
     message = models.TextField(verbose_name="сообщение")
     is_read = models.BooleanField(default=False)
+    settings = models.OneToOneField(
+        "notifications.NotificationSettings",
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="notification",
+        verbose_name="settings",
+    )
 
     def __str__(self):
-        return f"{self.recipientv}: {self.message}"
+        return f"{self.recipient}: {self.message}"
 
 
 class NotificationSettings(models.Model):
     user = models.OneToOneField("Users.User", on_delete=models.CASCADE)
     email_notifications = models.BooleanField(default=True)
     push_notifications = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"user: {self.user}"
