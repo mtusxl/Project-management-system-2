@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "celery",
     "drf_yasg",
+    "waffle",
     "Users",
     "Tasks",
     "Projects",
@@ -71,12 +72,15 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "waffle.middleware.WaffleMiddleware",
 ]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+    ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 5,
 }
 
 REDIS_CLIENT = Redis(host="localhost", port=6379, db=2)
