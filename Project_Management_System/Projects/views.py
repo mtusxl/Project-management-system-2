@@ -14,7 +14,12 @@ class ProjectAPI(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Project.objects.filter(Q(author=user) | Q(members=user)).distinct()
+        return (
+            Project.objects.filter(Q(author=user) | Q(members=user))
+            .prefetch_related("members")
+            .select_related("author")
+            .distinct()
+        )
 
     @action(detail=True, methods=["POST"], url_path="members")
     def add_member(self, request, pk=None):
