@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import (
+from Project_Management_System.notifications.views import (
     AdminNotificationSettingsUpdateView,
     AdminNotificationSettingsView,
     ClientNotificationPreferencesUpdateView,
