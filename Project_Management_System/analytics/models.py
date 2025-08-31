@@ -2,8 +2,9 @@ from datetime import date
 
 from django.db import models
 from django.db.models import Q
-from Projects.models import Project
-from Tasks.models import Task
+
+from Project_Management_System.Projects.models import Project
+from Project_Management_System.Tasks.models import Task
 
 from .base_model import BaseAnalytics
 
