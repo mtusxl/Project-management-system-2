@@ -3,7 +3,7 @@ from django.apps import AppConfig
 
 class UsersConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "Users"
+    name = "Project_Management_System.Users"
 
     def ready(self):
-        import Users.signals # noqa: F401
+        import Project_Management_System.Users.signals  # noqa: F401

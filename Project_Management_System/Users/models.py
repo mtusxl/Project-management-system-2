@@ -1,7 +1,7 @@
 from django.contrib.auth.models import BaseUserManager
 from django.db import models
 
-from .base_model import BaseUser
+from Project_Management_System.Users.base_model import BaseUser
 
 
 class CustomUserManager(BaseUserManager):

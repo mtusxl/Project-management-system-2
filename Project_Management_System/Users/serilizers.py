@@ -1,20 +1,23 @@
 import json
+import logging
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
-from Project_Management_System.settings.base import REDIS_CLIENT
-
-from .signals import verification_code_requested
+from Project_Management_System.config.settings.base import REDIS_CLIENT
+from Project_Management_System.Users.signals import verification_code_requested
 
 User = get_user_model()
 r_client = REDIS_CLIENT
+logger = logging.getLogger(__name__)
 
 
 class RegistSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
-        write_only=True, required=True, validators=[validate_password]
+        write_only=True,
+        required=True,
+        validators=[validate_password],
     )
 
     class Meta:
@@ -29,12 +32,17 @@ class RegistSerializer(serializers.ModelSerializer):
             )
 
         r_client.set(f"reg_data:{number}", json.dumps(validated_data), ex=300)
+        logger.debug(f"Сохранение данных регистрации в Redis для {number}")
+
         verification_code_requested.send(sender=RegistSerializer, number=number)
-        return {"message": "Code sent to your number."}
+        logger.info(f"код отправлен на номер  - {number})")
+        return True
 
     def verify_and_create(self, number, code):
         store_code = r_client.get(f"verify_code:{number}")
+        logger.info(f"код получен по номеру  - {number}, код: {store_code})")
         store_data = r_client.get(f"reg_data:{number}")
+        logger.debug(f"Получение данных регистрации из Redis для {number}: {store_data}")
 
         if not store_data:
             raise serializers.ValidationError(
@@ -50,5 +58,6 @@ class RegistSerializer(serializers.ModelSerializer):
         user.set_password(validated_data["password"])
         user.save()
 
+        logger.info(f"Удаление данных из Redis для {number} после создания пользователя")
         r_client.delete(f"reg_data:{number}", f"verify_code:{number}")
         return user
