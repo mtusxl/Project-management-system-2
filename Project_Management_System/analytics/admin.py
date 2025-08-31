@@ -4,7 +4,8 @@ from django.contrib import admin
 from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from Tasks.models import Task
+
+from Project_Management_System.Tasks.models import Task
 
 from .models import ProjectMetrics, Report, ScheduledReport, Sprint, UserPerformance
 

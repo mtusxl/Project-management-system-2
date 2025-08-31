@@ -1,5 +1,6 @@
 from django.contrib import admin
-from Tasks.models import Task
+
+from Project_Management_System.Tasks.models import Task
 
 from .models import Project
 

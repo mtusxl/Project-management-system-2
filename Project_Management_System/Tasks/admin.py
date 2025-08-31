@@ -1,5 +1,6 @@
-from Dashbords.models import Column, Dashbord
 from django.contrib import admin
+
+from Project_Management_System.Dashbords.models import Column, Dashbord
 
 from .models import Task
 
