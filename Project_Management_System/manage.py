@@ -7,11 +7,8 @@ from dotenv import load_dotenv  # noqa: F401
 
 
 def main():
-    """Run administrative tasks."""
     load_dotenv()
-    os.environ.setdefault(
-        "DJANGO_SETTINGS_MODULE", "Project_Management_System.settings.staging"
-    )
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.staging")
 
     try:
         from django.core.management import execute_from_command_line
