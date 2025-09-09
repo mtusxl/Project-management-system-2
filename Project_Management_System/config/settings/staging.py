@@ -9,15 +9,17 @@ if DEBUG:
     INSTALLED_APPS.append("debug_toolbar")  # noqa: F405
     INSTALLED_APPS.append("extra_settings")  # noqa: F405
 
+    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa: F405
+
     EXTRA_SETTINGS_CACHE_NAME = "extra_settings"
     CACHES = {
         "default": {
-            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-            "LOCATION": "default-cache",
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://redis:6379/3",
         },
         "extra_settings": {
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://redis:6379/3",
+            "LOCATION": "redis://redis:6379/2",
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             },
@@ -46,6 +48,7 @@ TEMPLATES = [
 
 
 DEBUG_TOOLBAR_CONFIG = {
+    "IS_RUNNING_TESTS": True,
     "SHOW_TEMPLATE_CONTEXT": True,
     "SHOW_TOOLBAR_CALLBACK": lambda request: True,
     "RESULTS_CACHE_SIZE": 100,
