@@ -4,10 +4,16 @@ from django.db import models
 
 from .base_model import BaseTask
 
-# from Users.models import User
-
 
 class Task(BaseTask):
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=["executor", "status", "deadline"],
+                name="idx_executor_status_deadline",
+            ),
+        ]
+
     PRIORITY_CHOICES = (
         (1, "Высокий"),
         (2, "Средний"),
@@ -17,7 +23,11 @@ class Task(BaseTask):
     name = models.CharField(verbose_name="название задачи", default="Без названия")
     description = models.TextField(blank=True, null=True, verbose_name="Описание")
     priority = models.IntegerField(
-        choices=PRIORITY_CHOICES, blank=True, null=True, verbose_name="приоритет"
+        choices=PRIORITY_CHOICES,
+        blank=True,
+        null=True,
+        db_index=True,
+        verbose_name="приоритет",
     )
     deadline = models.DateField(null=True, blank=True, verbose_name="дедлайн")
     executor = models.ForeignKey(
