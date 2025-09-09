@@ -121,7 +121,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "waffle.middleware.WaffleMiddleware",
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django_prometheus.middleware.PrometheusAfterMiddleware",
@@ -130,12 +129,21 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 5,
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "10/m",
+        "user": "2000/day",
+    },
 }
 
-REDIS_CLIENT = Redis(host="redis", port=6379, db=2)
+REDIS_CLIENT = Redis(host="redis", port=6379, db=1)
 
 
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
@@ -166,7 +174,7 @@ sentry_sdk.init(
     integrations=[
         DjangoIntegration(),
         CeleryIntegration(),
-        LoggingIntegration(level=logging.DEBUG, event_level=logging.INFO),
+        LoggingIntegration(level=logging.INFO, event_level=logging.INFO),
     ],
     traces_sample_rate=1.0,
     send_default_pii=True,
