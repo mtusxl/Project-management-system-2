@@ -1,8 +1,11 @@
 from django.db.models import Q
+from django.utils.decorators import method_decorator
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from utils.cache_utils import cache_api
 
 from .models import Project
 from .serializers import ProjectSerializer
@@ -20,6 +23,14 @@ class ProjectAPI(viewsets.ModelViewSet):
             .select_related("author")
             .distinct()
         )
+
+    @method_decorator(cache_api(prefix="project"))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_api(prefix="project-detail"))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
     @action(detail=True, methods=["POST"], url_path="members")
     def add_member(self, request, pk=None):

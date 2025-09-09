@@ -1,8 +1,11 @@
 from django.db.models import Q
+from django.utils.decorators import method_decorator
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from utils.cache_utils import cache_api
 
 from .models import Column, Dashbord
 from .serializers import ColumnSerializer, DashbordSerializer
@@ -18,6 +21,14 @@ class DashbordAPI(viewsets.ModelViewSet):
         return Dashbord.objects.filter(
             Q(project__author=user) | Q(project__members=user)
         ).distinct()
+
+    @method_decorator(cache_api(prefix="dashboards"))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_api(prefix="dashboard-detail"))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
     @action(detail=True, methods=["POST"], url_path="columns")
     def add_column(self, request, pk=None):

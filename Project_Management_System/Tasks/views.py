@@ -1,8 +1,11 @@
 from django.db.models import Q
+from django.utils.decorators import method_decorator
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from utils.cache_utils import cache_api
 
 from .models import Task
 from .serializers import TaskSerializer
@@ -17,13 +20,22 @@ class TaskApi(viewsets.ModelViewSet):
         user = self.request.user
         return Task.objects.filter(Q(author=user) | Q(executor=user)).distinct()
 
-    @action(detail=True, methods=["POST"], url_path="move/")
-    def move_task(self, request, pk=None):
+    @method_decorator(cache_api(prefix="tasks"))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_api(prefix="task-detail"))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @action(detail=True, methods=["POST"], url_path="move")
+    def move(self, request, pk=None):
         try:
             task = self.get_object()
-            seriaizer = TaskSerializer(task, data=request.data, pertial=True)
-            seriaizer.is_valid(raise_exception=True)
-            seriaizer.save()
+            serializer = TaskSerializer(task, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            print(serializer.data)
             return Response({"status": "task moved"}, status=status.HTTP_200_OK)
 
         except Task.DoesNotExist:
@@ -38,9 +50,9 @@ class TaskApi(viewsets.ModelViewSet):
     def assign(self, request, pk=None):
         try:
             task = self.get_object()
-            seriaizer = TaskSerializer(task, data=request.data, pertial=True)
-            seriaizer.is_valid(raise_exception=True)
-            seriaizer.save()
+            serializer = TaskSerializer(task, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
             return Response({"status": "executor assigned"}, status=status.HTTP_200_OK)
 
         except Task.DoesNotExist:
@@ -53,9 +65,9 @@ class TaskApi(viewsets.ModelViewSet):
     def add_subtask(self, request, pk=None):
         try:
             task = self.get_object()
-            seriaizer = TaskSerializer(task, data=request.data, pertial=True)
-            seriaizer.is_valid(raise_exception=True)
-            seriaizer.save()
+            serializer = TaskSerializer(task, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
             return Response({"status": "subtask added"}, status=status.HTTP_200_OK)
 
         except Task.DoesNotExist:
