@@ -8,6 +8,9 @@ if DEBUG:
     INSTALLED_APPS.append("django_extensions")  # noqa: F405
     INSTALLED_APPS.append("debug_toolbar")  # noqa: F405
     INSTALLED_APPS.append("extra_settings")  # noqa: F405
+    INSTALLED_APPS.append("silk")  # noqa: F405
+
+    MIDDLEWARE.append("silk.middleware.SilkyMiddleware")  # noqa: F405
 
     EXTRA_SETTINGS_CACHE_NAME = "extra_settings"
     CACHES = {
